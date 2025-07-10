@@ -51,26 +51,6 @@ npm run dev
 
 Mở [http://localhost:3000](http://localhost:3000) để xem website.
 
-## 📁 Cấu trúc Project
-
-\`\`\`
-├── app/
-│   ├── admin/              # Admin panel
-│   ├── api/                # API routes
-│   ├── blog/               # Blog pages
-│   ├── gallery/            # Gallery page
-│   ├── about/              # About page
-│   └── actions/            # Server actions
-├── components/
-│   ├── ui/                 # UI components
-│   └── rich-text-editor.tsx
-├── lib/
-│   └── supabase.ts         # Supabase client
-└── scripts/
-    ├── create-database.sql
-    └── seed-data.sql
-\`\`\`
-
 ## 🚀 Deploy
 
 ### Vercel (Recommended)
