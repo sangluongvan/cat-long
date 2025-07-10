@@ -1,13 +1,28 @@
 "use server"
 
-import { createServerClient } from "@/lib/supabase"
 import { revalidatePath } from "next/cache"
+
+// Mock data storage (in real app this would be database)
+let mockPosts = [
+  {
+    id: "1",
+    title: "Ngày đầu tiên Long về nhà",
+    content: "<p>Hôm nay là một ngày đặc biệt...</p>",
+    excerpt: "Câu chuyện về ngày đầu tiên chú mèo nhỏ bé...",
+    category: "Kỷ niệm",
+    featured_image: "/placeholder.svg?height=400&width=800",
+    status: "published",
+    tags: ["Long", "Kỷ niệm"],
+    author: "Admin",
+    created_at: "2024-01-15T00:00:00Z",
+    updated_at: "2024-01-15T00:00:00Z",
+  },
+]
 
 export async function createPost(formData: FormData) {
   try {
-    const supabase = createServerClient()
-
     const postData = {
+      id: Date.now().toString(),
       title: formData.get("title") as string,
       content: formData.get("content") as string,
       excerpt: formData.get("excerpt") as string,
@@ -17,18 +32,16 @@ export async function createPost(formData: FormData) {
       tags: JSON.parse((formData.get("tags") as string) || "[]"),
       author: "Admin",
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
 
-    const { data, error } = await supabase.from("posts").insert([postData]).select().single()
-
-    if (error) {
-      return { success: false, error: error.message }
-    }
+    // Add to mock storage
+    mockPosts.push(postData)
 
     revalidatePath("/blog")
     revalidatePath("/admin")
 
-    return { success: true, post: data }
+    return { success: true, post: postData }
   } catch (error) {
     return { success: false, error: "Failed to create post" }
   }
@@ -36,8 +49,6 @@ export async function createPost(formData: FormData) {
 
 export async function updatePost(id: string, formData: FormData) {
   try {
-    const supabase = createServerClient()
-
     const postData = {
       title: formData.get("title") as string,
       content: formData.get("content") as string,
@@ -49,16 +60,16 @@ export async function updatePost(id: string, formData: FormData) {
       updated_at: new Date().toISOString(),
     }
 
-    const { data, error } = await supabase.from("posts").update(postData).eq("id", id).select().single()
-
-    if (error) {
-      return { success: false, error: error.message }
+    // Update in mock storage
+    const index = mockPosts.findIndex((post) => post.id === id)
+    if (index !== -1) {
+      mockPosts[index] = { ...mockPosts[index], ...postData }
     }
 
     revalidatePath("/blog")
     revalidatePath("/admin")
 
-    return { success: true, post: data }
+    return { success: true, post: mockPosts[index] }
   } catch (error) {
     return { success: false, error: "Failed to update post" }
   }
@@ -66,13 +77,8 @@ export async function updatePost(id: string, formData: FormData) {
 
 export async function deletePost(id: string) {
   try {
-    const supabase = createServerClient()
-
-    const { error } = await supabase.from("posts").delete().eq("id", id)
-
-    if (error) {
-      return { success: false, error: error.message }
-    }
+    // Remove from mock storage
+    mockPosts = mockPosts.filter((post) => post.id !== id)
 
     revalidatePath("/blog")
     revalidatePath("/admin")

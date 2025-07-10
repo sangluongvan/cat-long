@@ -1,4 +1,7 @@
 -- Thêm dữ liệu mẫu cho posts
+-- Mock seed data for documentation
+-- In production, this would insert actual data
+
 INSERT INTO posts (title, content, excerpt, featured_image, category, tags, status, views, likes) VALUES
 (
   'Ngày đầu tiên Long về nhà',

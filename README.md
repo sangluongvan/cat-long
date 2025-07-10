@@ -1,6 +1,6 @@
 # Blog của Long - Cat Blog Website
 
-Một trang web blog cá nhân dành riêng cho chú mèo Long, được xây dựng với Next.js 15, Supabase và Vercel.
+Một trang web blog cá nhân dành riêng cho chú mèo Long, được xây dựng với Next.js 15 và mock data.
 
 ## ✨ Tính năng
 
@@ -17,13 +17,12 @@ Một trang web blog cá nhân dành riêng cho chú mèo Long, được xây d�
 - **Quản lý bài viết**: Tạo, sửa, xóa bài viết
 - **Rich text editor**: Editor WYSIWYG
 - **Media manager**: Upload và quản lý ảnh/video
-- **Comment moderation**: Duyệt bình luận
+- **Settings**: Cài đặt website
 - **Authentication**: Bảo mật admin area
 
 ### 🚀 Technical Features
 - **Next.js 15**: App Router, Server Components
-- **Supabase**: Database, Authentication
-- **Vercel Blob**: File storage
+- **Mock Data**: Hoạt động mà không cần database
 - **Tailwind CSS**: Styling
 - **TypeScript**: Type safety
 - **SEO optimized**: Meta tags, structured data
@@ -45,29 +44,7 @@ yarn install
 pnpm install
 \`\`\`
 
-### 3. Thiết lập môi trường
-
-Tạo file `.env.local` từ `.env.example`:
-\`\`\`bash
-cp .env.example .env.local
-\`\`\`
-
-Cập nhật các biến môi trường:
-\`\`\`env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
-\`\`\`
-
-### 4. Thiết lập Database
-
-1. Tạo project mới trên [Supabase](https://supabase.com)
-2. Chạy SQL scripts trong thư mục `scripts/`:
-   - `create-database.sql`: Tạo tables
-   - `seed-data.sql`: Thêm dữ liệu mẫu
-
-### 5. Chạy development server
+### 3. Chạy development server
 \`\`\`bash
 npm run dev
 \`\`\`
@@ -89,32 +66,22 @@ Mở [http://localhost:3000](http://localhost:3000) để xem website.
 │   └── rich-text-editor.tsx
 ├── lib/
 │   └── supabase.ts         # Supabase client
-├── scripts/
-│   ├── create-database.sql
-│   └── seed-data.sql
-└── middleware.ts           # Route protection
+└── scripts/
+    ├── create-database.sql
+    └── seed-data.sql
 \`\`\`
 
-## 🚀 Deploy lên Vercel
+## 🚀 Deploy
 
-### 1. Push code lên GitHub
-\`\`\`bash
-git add .
-git commit -m "Initial commit"
-git push origin main
-\`\`\`
+### Vercel (Recommended)
+1. Push code lên GitHub
+2. Connect repository với Vercel
+3. Deploy tự động
 
-### 2. Deploy trên Vercel
-1. Truy cập [Vercel Dashboard](https://vercel.com/dashboard)
-2. Click "New Project"
-3. Import repository từ GitHub
-4. Thêm environment variables
-5. Deploy!
-
-### 3. Thiết lập Vercel Blob
-1. Trong Vercel Dashboard, vào Storage tab
-2. Tạo Blob store mới
-3. Copy token vào environment variables
+### Các platform khác
+- Netlify
+- Railway
+- Render
 
 ## 🔐 Admin Access
 
@@ -142,6 +109,11 @@ git push origin main
 1. Comments sẽ hiển thị trong Dashboard
 2. Có thể approve/reject từ admin panel
 
+### Cài đặt website
+1. Vào "Cài đặt" trong admin panel
+2. Tùy chỉnh thông tin website
+3. Cấu hình SEO, theme, etc.
+
 ## 🎨 Customization
 
 ### Thay đổi màu sắc
@@ -158,21 +130,31 @@ colors: {
 ### Thêm tính năng mới
 1. Tạo component trong `components/`
 2. Thêm API route trong `app/api/`
-3. Cập nhật database schema nếu cần
+3. Cập nhật mock data nếu cần
+
+## 🔄 Chuyển sang Database thật
+
+Để sử dụng database thật (Supabase):
+
+1. Tạo project Supabase
+2. Cập nhật `.env.local`:
+   \`\`\`
+   NEXT_PUBLIC_SUPABASE_URL=your_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_key
+   \`\`\`
+3. Chạy SQL scripts trong `scripts/`
+4. Update `lib/supabase.ts` để sử dụng Supabase thật
 
 ## 🐛 Troubleshooting
 
-### Lỗi Supabase connection
-- Kiểm tra URL và API keys
-- Đảm bảo RLS policies được thiết lập đúng
-
-### Lỗi upload file
-- Kiểm tra Vercel Blob token
-- Đảm bảo file size không quá 50MB
-
-### Lỗi build
+### Build errors
+- Đảm bảo tất cả dependencies đã được cài đặt
 - Chạy `npm run lint` để kiểm tra lỗi
-- Kiểm tra TypeScript errors
+
+### Mock data không hiển thị
+- Kiểm tra console để xem lỗi
+- Đảm bảo API routes hoạt động
 
 ## 📞 Support
 

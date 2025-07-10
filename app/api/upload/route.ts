@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { put } from "@vercel/blob"
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,11 +9,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Filename is required" }, { status: 400 })
     }
 
-    const blob = await put(filename, request.body!, {
-      access: "public",
-    })
+    // Mock upload response
+    const mockBlob = {
+      url: `/placeholder.svg?height=400&width=600&text=${encodeURIComponent(filename)}`,
+      downloadUrl: `/placeholder.svg?height=400&width=600&text=${encodeURIComponent(filename)}`,
+      pathname: filename,
+      contentType: "image/jpeg",
+      contentDisposition: `attachment; filename="${filename}"`,
+    }
 
-    return NextResponse.json(blob)
+    return NextResponse.json(mockBlob)
   } catch (error) {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 })
   }

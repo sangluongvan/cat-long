@@ -1,55 +1,40 @@
--- Tạo bảng posts
-CREATE TABLE IF NOT EXISTS posts (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  content TEXT NOT NULL,
-  excerpt TEXT,
-  featured_image VARCHAR(500),
-  category VARCHAR(100),
-  tags JSONB DEFAULT '[]',
-  status VARCHAR(20) DEFAULT 'draft',
-  author VARCHAR(100) DEFAULT 'Admin',
-  views INTEGER DEFAULT 0,
-  likes INTEGER DEFAULT 0,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+-- Mock SQL file for documentation
+-- In production, these would create actual database tables
 
--- Tạo bảng comments
-CREATE TABLE IF NOT EXISTS comments (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
-  author_name VARCHAR(100) NOT NULL,
-  author_email VARCHAR(255) NOT NULL,
-  content TEXT NOT NULL,
-  status VARCHAR(20) DEFAULT 'pending',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+-- Posts table
+-- CREATE TABLE IF NOT EXISTS posts (
+--   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+--   title VARCHAR(255) NOT NULL,
+--   content TEXT NOT NULL,
+--   excerpt TEXT,
+--   featured_image VARCHAR(500),
+--   category VARCHAR(100),
+--   tags JSONB DEFAULT '[]',
+--   status VARCHAR(20) DEFAULT 'draft',
+--   author VARCHAR(100) DEFAULT 'Admin',
+--   views INTEGER DEFAULT 0,
+--   likes INTEGER DEFAULT 0,
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+--   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
 
--- Tạo bảng media
-CREATE TABLE IF NOT EXISTS media (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  filename VARCHAR(255) NOT NULL,
-  original_name VARCHAR(255) NOT NULL,
-  file_type VARCHAR(50) NOT NULL,
-  file_size INTEGER NOT NULL,
-  url VARCHAR(500) NOT NULL,
-  alt_text VARCHAR(255),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+-- Media table  
+-- CREATE TABLE IF NOT EXISTS media (
+--   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+--   filename VARCHAR(255) NOT NULL,
+--   original_name VARCHAR(255) NOT NULL,
+--   file_type VARCHAR(50) NOT NULL,
+--   file_size INTEGER NOT NULL,
+--   url VARCHAR(500) NOT NULL,
+--   alt_text VARCHAR(255),
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
 
--- Tạo bảng settings
-CREATE TABLE IF NOT EXISTS settings (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  key VARCHAR(100) UNIQUE NOT NULL,
-  value TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Thêm indexes
-CREATE INDEX IF NOT EXISTS idx_posts_status ON posts(status);
-CREATE INDEX IF NOT EXISTS idx_posts_category ON posts(category);
-CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
-CREATE INDEX IF NOT EXISTS idx_comments_status ON comments(status);
+-- Settings table
+-- CREATE TABLE IF NOT EXISTS settings (
+--   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+--   key VARCHAR(100) UNIQUE NOT NULL,
+--   value TEXT,
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+--   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );

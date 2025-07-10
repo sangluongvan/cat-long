@@ -1,11 +1,41 @@
-import { createClient } from "@supabase/supabase-js"
+// Mock Supabase client for development
+const mockSupabase = {
+  from: (table: string) => ({
+    select: (columns?: string) => ({
+      order: (column: string, options?: any) => ({
+        then: (callback: any) => callback({ data: [], error: null }),
+      }),
+      then: (callback: any) => callback({ data: [], error: null }),
+    }),
+    insert: (data: any) => ({
+      select: () => ({
+        single: () => ({
+          then: (callback: any) => callback({ data: data[0], error: null }),
+        }),
+        then: (callback: any) => callback({ data: data, error: null }),
+      }),
+      then: (callback: any) => callback({ data: data, error: null }),
+    }),
+    update: (data: any) => ({
+      eq: (column: string, value: any) => ({
+        select: () => ({
+          single: () => ({
+            then: (callback: any) => callback({ data: { ...data, id: value }, error: null }),
+          }),
+        }),
+      }),
+    }),
+    delete: () => ({
+      eq: (column: string, value: any) => ({
+        then: (callback: any) => callback({ error: null }),
+      }),
+    }),
+  }),
+}
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = mockSupabase as any
 
 // Server-side client
 export const createServerClient = () => {
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+  return mockSupabase as any
 }
